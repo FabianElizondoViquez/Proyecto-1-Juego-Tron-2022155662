@@ -7,34 +7,141 @@ namespace Proyecto1JuegoTron
     public partial class Form1 : Form
     {
         private Grid _grid;
+        private Image _motoAzul;
+        private Nodo _posicionMoto;
+        private float _anguloRotacion;
+        private int _tamañoNodo;
+        private int _anchoMoto;
+        private int _altoMoto;
 
         public Form1()
         {
             InitializeComponent();
+            _anguloRotacion = 0;
+            this.DoubleBuffered = true;
+            this.Resize += new EventHandler(Form1_Resize);
             CrearGrid();
+            CargarMoto();
+            this.KeyDown += new KeyEventHandler(Form1_KeyDown);
         }
 
         private void CrearGrid()
         {
-            int filas = 60; // Calculado según el tamaño de la pantalla y tamaño de las celdas
-            int columnas = 34;
+            _tamañoNodo = Math.Min(this.ClientSize.Width / 60, this.ClientSize.Height / 34); // Tamaño del nodo ajustado a la pantalla
+            int filas = this.ClientSize.Height / _tamañoNodo;
+            int columnas = this.ClientSize.Width / _tamañoNodo;
+
             _grid = new Grid(filas, columnas);
-            this.Invalidate(); // Redibuja el Form para mostrar el grid
+
+            // Si la moto está en una posición válida, mantenla en el nuevo grid
+            if (_posicionMoto != null)
+            {
+                int filaCentro = Math.Min(filas / 2, _posicionMoto.X);
+                int columnaCentro = Math.Min(columnas / 2, _posicionMoto.Y);
+                _posicionMoto = _grid.Nodos[filaCentro, columnaCentro];
+            }
+            else
+            {
+                // Posicionar la moto en el centro si es la primera inicialización
+                int filaCentro = filas / 2;
+                int columnaCentro = columnas / 2;
+                _posicionMoto = _grid.Nodos[filaCentro, columnaCentro];
+            }
+
+            this.Invalidate();
+        }
+
+        private void CargarMoto()
+        {
+            try
+            {
+                _motoAzul = Image.FromFile("motoazul.png");
+                _anchoMoto = 35;  // Ancho de la moto
+                _altoMoto = 40;   // Alto de la moto
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar la imagen de la moto: " + ex.Message);
+            }
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            CrearGrid();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
+            e.Graphics.Clear(Color.Black); // Fondo del grid
 
-            e.Graphics.Clear(Color.Black); // Fondo negro
-
-            for (int i = 0; i < _grid.Filas; i++)
+            if (_grid != null)
             {
-                for (int j = 0; j < _grid.Columnas; j++)
+                // Crear un color azul claro con 50% de opacidad
+                Color colorLinea = Color.FromArgb(55, 135, 206, 250);
+
+                // Crear un Pen con el color semi-transparente
+                using (Pen pen = new Pen(colorLinea))
                 {
-                    Nodo nodo = _grid.Nodos[i, j];
-                    e.Graphics.DrawRectangle(Pens.Turquoise, new Rectangle(nodo.X * 30, nodo.Y * 30, 30, 30)); // Líneas azules
+                    for (int i = 0; i < _grid.Filas; i++)
+                    {
+                        for (int j = 0; j < _grid.Columnas; j++)
+                        {
+                            Nodo nodo = _grid.Nodos[i, j];
+                            e.Graphics.DrawRectangle(pen, new Rectangle(nodo.Y * _tamañoNodo, nodo.X * _tamañoNodo, _tamañoNodo, _tamañoNodo)); // Líneas del grid
+                        }
+                    }
                 }
+
+                if (_posicionMoto != null && _motoAzul != null)
+                {
+                    // Calcular la posición central de la moto
+                    float xCentro = _posicionMoto.Y * _tamañoNodo + _tamañoNodo / 2.0f;
+                    float yCentro = _posicionMoto.X * _tamañoNodo + _tamañoNodo / 2.0f;
+
+                    // Configurar la rotación
+                    e.Graphics.TranslateTransform(xCentro, yCentro);
+                    e.Graphics.RotateTransform(_anguloRotacion);
+                    e.Graphics.TranslateTransform(-xCentro, -yCentro);
+
+                    // Dibujar la moto
+                    e.Graphics.DrawImage(_motoAzul, new Rectangle(
+                        (int)(xCentro - _anchoMoto / 2),
+                        (int)(yCentro - _altoMoto / 2),
+                        _anchoMoto,
+                        _altoMoto));
+                }
+            }
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            Nodo nuevoNodo = null;
+
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                    nuevoNodo = _posicionMoto.Arriba;
+                    _anguloRotacion = 0;
+                    break;
+                case Keys.Down:
+                    nuevoNodo = _posicionMoto.Abajo;
+                    _anguloRotacion = 180;
+                    break;
+                case Keys.Left:
+                    nuevoNodo = _posicionMoto.Izquierda;
+                    _anguloRotacion = -90;
+                    break;
+                case Keys.Right:
+                    nuevoNodo = _posicionMoto.Derecha;
+                    _anguloRotacion = 90;
+                    break;
+            }
+
+            if (nuevoNodo != null)
+            {
+                _posicionMoto = nuevoNodo;
+                this.Invalidate();
             }
         }
     }
@@ -80,7 +187,6 @@ namespace Proyecto1JuegoTron
                 }
             }
 
-            // Establecer referencias
             for (int i = 0; i < Filas; i++)
             {
                 for (int j = 0; j < Columnas; j++)

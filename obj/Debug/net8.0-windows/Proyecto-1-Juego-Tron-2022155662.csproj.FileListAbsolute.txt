@@ -1,12 +1,13 @@
-C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\obj\Debug\net8.0-windows\Proyecto-1-Juego-Tron-2022155662.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\obj\Debug\net8.0-windows\Proyecto-1-Juego-Tron-2022155662.AssemblyInfoInputs.cache
-C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\obj\Debug\net8.0-windows\Proyecto-1-Juego-Tron-2022155662.AssemblyInfo.cs
-C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\obj\Debug\net8.0-windows\Proyecto-1-Juego-Tron-2022155662.csproj.CoreCompileInputs.cache
 C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\bin\Debug\net8.0-windows\Proyecto-1-Juego-Tron-2022155662.exe
 C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\bin\Debug\net8.0-windows\Proyecto-1-Juego-Tron-2022155662.deps.json
 C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\bin\Debug\net8.0-windows\Proyecto-1-Juego-Tron-2022155662.runtimeconfig.json
 C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\bin\Debug\net8.0-windows\Proyecto-1-Juego-Tron-2022155662.dll
 C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\bin\Debug\net8.0-windows\Proyecto-1-Juego-Tron-2022155662.pdb
+C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\obj\Debug\net8.0-windows\Proyecto-1-Juego-Tron-2022155662.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\obj\Debug\net8.0-windows\Proyecto-1-Juego-Tron-2022155662.AssemblyInfoInputs.cache
+C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\obj\Debug\net8.0-windows\Proyecto-1-Juego-Tron-2022155662.AssemblyInfo.cs
+C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\obj\Debug\net8.0-windows\Proyecto-1-Juego-Tron-2022155662.csproj.CoreCompileInputs.cache
+C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\obj\Debug\net8.0-windows\Proyecto-1-Juego-Tron-2022155662.sourcelink.json
 C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\obj\Debug\net8.0-windows\Proyecto-1-Juego-Tron-2022155662.dll
 C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\obj\Debug\net8.0-windows\refint\Proyecto-1-Juego-Tron-2022155662.dll
 C:\Users\Dell\OneDrive\Documentos\GitHub\Proyecto-1-Juego-Tron-2022155662\Proyecto-1-Juego-Tron-2022155662\obj\Debug\net8.0-windows\Proyecto-1-Juego-Tron-2022155662.pdb
