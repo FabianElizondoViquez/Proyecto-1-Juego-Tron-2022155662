@@ -13,6 +13,7 @@ namespace Proyecto1JuegoTron
         private int _tamañoNodo;
         private int _anchoMoto;
         private int _altoMoto;
+        private Estela _estelaMoto;
 
         public Form1()
         {
@@ -23,11 +24,16 @@ namespace Proyecto1JuegoTron
             CrearGrid();
             CargarMoto();
             this.KeyDown += new KeyEventHandler(Form1_KeyDown);
+
+            // Inicializar la estela
+            _estelaMoto = new Estela(_posicionMoto);
+            _estelaMoto.Siguiente = new Estela(_posicionMoto);
+            _estelaMoto.Siguiente.Siguiente = new Estela(_posicionMoto);
         }
 
         private void CrearGrid()
         {
-            _tamañoNodo = Math.Min(this.ClientSize.Width / 60, this.ClientSize.Height / 34); // Tamaño del nodo ajustado a la pantalla
+            _tamañoNodo = Math.Min(this.ClientSize.Width / 90, this.ClientSize.Height / 51); // Tamaño del nodo ajustado a la pantalla
             int filas = this.ClientSize.Height / _tamañoNodo;
             int columnas = this.ClientSize.Width / _tamañoNodo;
 
@@ -93,6 +99,21 @@ namespace Proyecto1JuegoTron
                     }
                 }
 
+                // Dibujar estela
+                Estela estela = _estelaMoto;
+                while (estela != null)
+                {
+                    if (estela.Nodo != null)
+                    {
+                        e.Graphics.FillRectangle(Brushes.Turquoise, new Rectangle(
+                            estela.Nodo.Y * _tamañoNodo,
+                            estela.Nodo.X * _tamañoNodo,
+                            _tamañoNodo,
+                            _tamañoNodo));
+                    }
+                    estela = estela.Siguiente;
+                }
+
                 if (_posicionMoto != null && _motoAzul != null)
                 {
                     // Calcular la posición central de la moto
@@ -140,6 +161,24 @@ namespace Proyecto1JuegoTron
 
             if (nuevoNodo != null)
             {
+                // Actualizar estela
+                Estela nuevaEstela = new Estela(_posicionMoto);
+                nuevaEstela.Siguiente = _estelaMoto;
+                _estelaMoto = nuevaEstela;
+
+                // Mantener solo 3 posiciones en la estela
+                Estela tempEstela = _estelaMoto;
+                int count = 0;
+                while (tempEstela != null && count < 3)
+                {
+                    tempEstela = tempEstela.Siguiente;
+                    count++;
+                }
+                if (tempEstela != null)
+                {
+                    tempEstela.Siguiente = null;
+                }
+
                 _posicionMoto = nuevoNodo;
                 this.Invalidate();
             }
@@ -155,6 +194,7 @@ namespace Proyecto1JuegoTron
 
         public int X { get; set; }
         public int Y { get; set; }
+        public Estela Estela { get; set; } // Nueva propiedad
 
         public Nodo(int x, int y)
         {
@@ -197,6 +237,18 @@ namespace Proyecto1JuegoTron
                     if (j < Columnas - 1) Nodos[i, j].Derecha = Nodos[i, j + 1];
                 }
             }
+        }
+    }
+
+    public class Estela
+    {
+        public Nodo Nodo { get; set; }
+        public Estela Siguiente { get; set; }
+
+        public Estela(Nodo nodo)
+        {
+            Nodo = nodo;
+            Siguiente = null;
         }
     }
 }
