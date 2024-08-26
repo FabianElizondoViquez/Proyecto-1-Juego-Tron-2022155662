@@ -15,10 +15,17 @@ namespace Proyecto1JuegoTron
         private int _altoMoto;
         private Estela _estelaMoto;
         private System.Windows.Forms.Timer _timer;
+        private Random _random;
+        private int _velocidadMoto;
+        private int _combustibleMoto;
+        private Font _font;
+        private Brush _brush;
 
         public Form1()
         {
             InitializeComponent();
+            _font = new Font("Arial", 12);
+            _brush = Brushes.White;
             _anguloRotacion = 0;
             this.DoubleBuffered = true;
             this.Resize += new EventHandler(Form1_Resize);
@@ -31,9 +38,16 @@ namespace Proyecto1JuegoTron
             _estelaMoto.Siguiente = new Estela(_posicionMoto);
             _estelaMoto.Siguiente.Siguiente = new Estela(_posicionMoto);
 
+            // Configurar la velocidad aleatoria de la moto
+            _random = new Random();
+            _velocidadMoto = _random.Next(1, 11); // Valor aleatorio entre 1 y 10
+            // Configurar el combustible de la moto
+            _combustibleMoto = 100; // Valor inicial de combustible
+            _nodosRecorridos = 0;
+
             // Configurar el Timer para mover la moto automáticamente
             _timer = new System.Windows.Forms.Timer();
-            _timer.Interval = 100; // Intervalo en milisegundos
+            _timer.Interval = 1100 / _velocidadMoto; // Inversamente proporcional a la velocidad
             _timer.Tick += new EventHandler(Timer_Tick);
             _timer.Start();
         }
@@ -48,9 +62,17 @@ namespace Proyecto1JuegoTron
                 DibujarGrid(e.Graphics);
                 DibujarEstela(e.Graphics);
                 DibujarMoto(e.Graphics);
-            }
-        }
+            }    
+            if (_font != null && _brush != null)
+            {
+                string velocidadTexto = $"Velocidad: {_velocidadMoto}";
+                string combustibleTexto = $"Combustible: {_combustibleMoto}";
 
+                e.Graphics.DrawString(velocidadTexto, _font, _brush, new PointF(10, 10));
+                e.Graphics.DrawString(combustibleTexto, _font, _brush, new PointF(10, 30));
+            }
+            
+        }
         // Métodos delegados a archivos específicos:
         // CrearGrid se encuentra en Form1_Grid.cs
         // CargarMoto se encuentra en Form1_Moto.cs
