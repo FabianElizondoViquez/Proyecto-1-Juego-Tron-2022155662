@@ -35,10 +35,7 @@ namespace Proyecto1JuegoTron
         {
             // Verificar si queda combustible
             if (_combustibleMoto > 0)
-            {
-                _combustibleMoto -= _velocidadMoto / 10; // Ajustar la tasa de consumo
-                _combustibleMoto = Math.Max(_combustibleMoto, 0); // Evitar valores negativos
-            }
+        
             {
                 Nodo nuevoNodo = null;
 
@@ -99,7 +96,6 @@ namespace Proyecto1JuegoTron
                     }
                     
                     this.Invalidate(); // Redibujar la pantalla
-                
                 }
             }
         }

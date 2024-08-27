@@ -20,10 +20,20 @@ namespace Proyecto1JuegoTron
         private int _combustibleMoto;
         private Font _font;
         private Brush _brush;
+        private Panel _infoPanel;
 
         public Form1()
         {
             InitializeComponent();
+            _infoPanel = new Panel
+            {
+                BackColor = Color.Black,
+                BorderStyle = BorderStyle.FixedSingle,
+                Size = new Size(200, 50),
+                Location = new Point(10, 10) // Ajusta la ubicación según sea necesario
+            };
+            _infoPanel.Paint += new PaintEventHandler(PanelInfo_Paint);
+            this.Controls.Add(_infoPanel);
             _font = new Font("Arial", 12);
             _brush = Brushes.White;
             _anguloRotacion = 0;
@@ -63,15 +73,15 @@ namespace Proyecto1JuegoTron
                 DibujarEstela(e.Graphics);
                 DibujarMoto(e.Graphics);
             }    
-            if (_font != null && _brush != null)
-            {
-                string velocidadTexto = $"Velocidad: {_velocidadMoto}";
-                string combustibleTexto = $"Combustible: {_combustibleMoto}";
+            _infoPanel.Invalidate();
+        }
+        private void PanelInfo_Paint(object sender, PaintEventArgs e)
+        {
+            string velocidadTexto = $"Velocidad: {_velocidadMoto}";
+            string combustibleTexto = $"Combustible: {_combustibleMoto}";
 
-                e.Graphics.DrawString(velocidadTexto, _font, _brush, new PointF(10, 10));
-                e.Graphics.DrawString(combustibleTexto, _font, _brush, new PointF(10, 30));
-            }
-            
+            e.Graphics.DrawString(velocidadTexto, _font, _brush, new PointF(10, 10));
+            e.Graphics.DrawString(combustibleTexto, _font, _brush, new PointF(10, 30));
         }
         // Métodos delegados a archivos específicos:
         // CrearGrid se encuentra en Form1_Grid.cs
