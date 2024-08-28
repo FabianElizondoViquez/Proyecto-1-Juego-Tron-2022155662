@@ -19,6 +19,18 @@ namespace Proyecto1JuegoTron
             }
         }
 
+        private void CargarBots()
+        {
+            try
+            {
+                _motoAmarilla = Image.FromFile("motoamarilla.png");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar la imagen de la moto amarilla: " + ex.Message);
+            }
+        }
+
         private void DibujarMoto(Graphics g)
         {
             if (_posicionMoto != null && _motoAzul != null)

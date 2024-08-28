@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -8,6 +9,7 @@ namespace Proyecto1JuegoTron
     {
         private Grid _grid;
         private Image _motoAzul;
+        private Image _motoAmarilla;
         private Nodo _posicionMoto;
         private float _anguloRotacion;
         private int _tamañoNodo;
@@ -21,6 +23,8 @@ namespace Proyecto1JuegoTron
         private Font _font;
         private Brush _brush;
         private Panel _infoPanel;
+        private List<Bot> _bots;
+        private System.Windows.Forms.Timer _timerBots;
 
         public Form1()
         {
@@ -41,6 +45,8 @@ namespace Proyecto1JuegoTron
             this.Resize += new EventHandler(Form1_Resize);
             CrearGrid();
             CargarMoto();
+            CargarBots(); // Cargar la imagen de los bots
+            InicializarTemporizadorBots();
             this.KeyDown += new KeyEventHandler(Form1_KeyDown);
 
             // Inicializar la estela
@@ -55,6 +61,14 @@ namespace Proyecto1JuegoTron
             _combustibleMoto = 100; // Valor inicial de combustible
             _nodosRecorridos = 0;
 
+            _bots = new List<Bot>();
+            for (int i = 0; i < 4; i++)
+            {
+                Nodo posicionInicial = _grid.Nodos[_random.Next(0, _grid.Filas), _random.Next(0, _grid.Columnas)];
+                int velocidadBot = _random.Next(1, 6); // Velocidad aleatoria entre 1 y 5
+                Bot bot = new Bot(posicionInicial, _motoAmarilla, 0, _tamañoNodo); // El ángulo de rotación inicial se establece en 0
+                _bots.Add(bot);
+            }
             // Configurar el Timer para mover la moto automáticamente
             _timer = new System.Windows.Forms.Timer();
             _timer.Interval = 1100 / _velocidadMoto; // Inversamente proporcional a la velocidad
@@ -72,9 +86,14 @@ namespace Proyecto1JuegoTron
                 DibujarGrid(e.Graphics);
                 DibujarEstela(e.Graphics);
                 DibujarMoto(e.Graphics);
+                foreach (var bot in _bots)
+                {
+                    bot.Dibujar(e.Graphics, _tamañoNodo);
+                }
             }    
             _infoPanel.Invalidate();
         }
+
         private void PanelInfo_Paint(object sender, PaintEventArgs e)
         {
             string velocidadTexto = $"Velocidad: {_velocidadMoto}";
@@ -83,14 +102,22 @@ namespace Proyecto1JuegoTron
             e.Graphics.DrawString(velocidadTexto, _font, _brush, new PointF(10, 10));
             e.Graphics.DrawString(combustibleTexto, _font, _brush, new PointF(10, 30));
         }
-        // Métodos delegados a archivos específicos:
-        // CrearGrid se encuentra en Form1_Grid.cs
-        // CargarMoto se encuentra en Form1_Moto.cs
-        // DibujarGrid se encuentra en Form1_Grid.cs
-        // DibujarEstela se encuentra en Form1_Estela.cs
-        // DibujarMoto se encuentra en Form1_Moto.cs
-        // Form1_Resize se encuentra en Form1_Eventos.cs
-        // Form1_KeyDown se encuentra en Form1_Eventos.cs
-        // Timer_Tick se encuentra en Form1_Eventos.cs
+
+        private void InicializarTemporizadorBots()
+        {
+            _timerBots = new System.Windows.Forms.Timer();
+            _timerBots.Interval = 1000; // Intervalo en milisegundos
+            _timerBots.Tick += new EventHandler(TimerBots_Tick);
+            _timerBots.Start();
+        }
+        private void TimerBots_Tick(object sender, EventArgs e)
+        {
+            foreach (var bot in _bots)
+            {
+                bot.Mover();
+            }
+
+            this.Invalidate(); // Redibujar la pantalla
+        }
     }
 }
