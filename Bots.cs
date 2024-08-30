@@ -34,10 +34,10 @@ namespace Proyecto1JuegoTron
             if (Combustible > 0)
             {
                 // Movimiento aleatorio
-                int direccion = _random.Next(0, 4);
+                int direccionAleatoria = new Random().Next(0, 4); // 0 = Arriba, 1 = Abajo, 2 = Izquierda, 3 = Derecha
                 Nodo nuevoNodo = null;
 
-                switch (direccion)
+                switch (direccionAleatoria)
                 {
                     case 0: // Arriba
                         nuevoNodo = Posicion.Arriba;

@@ -16,7 +16,7 @@ namespace Proyecto1JuegoTron
         private int _anchoMoto;
         private int _altoMoto;
         private Estela _estelaMoto;
-        private System.Windows.Forms.Timer _timer;
+        private System.Windows.Forms.Timer _timerMoto;
         private Random _random;
         private int _velocidadMoto;
         private int _combustibleMoto;
@@ -70,10 +70,11 @@ namespace Proyecto1JuegoTron
                 _bots.Add(bot);
             }
             // Configurar el Timer para mover la moto automáticamente
-            _timer = new System.Windows.Forms.Timer();
-            _timer.Interval = 1100 / _velocidadMoto; // Inversamente proporcional a la velocidad
-            _timer.Tick += new EventHandler(Timer_Tick);
-            _timer.Start();
+            
+            _timerMoto = new System.Windows.Forms.Timer();
+            _timerMoto.Interval = 1100 / _velocidadMoto; // Inversamente proporcional a la velocidad
+            _timerMoto.Tick += new EventHandler(Timer_Tick);
+            _timerMoto.Start();
         }
 
         protected override void OnPaint(PaintEventArgs e)

@@ -91,7 +91,7 @@ namespace Proyecto1JuegoTron
                     if (_combustibleMoto <= 0)
                     {
                         _combustibleMoto = 0;
-                        _timer.Stop();
+                        _timerMoto.Stop();
                         MessageBox.Show("La moto se ha quedado sin combustible.");
                     }
                     
