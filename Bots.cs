@@ -7,12 +7,9 @@ namespace Proyecto1JuegoTron
     /// <summary>
     /// Representa un bot en el juego Tron, que se mueve automáticamente en un grid.
     /// </summary>
-    /// 
     public class Bot
     {
-        /// <summary>
-        /// Nodo actual en el grid donde se encuentra el bot.
-        /// </summary>
+
         public Nodo Posicion { get; set; }
 
         /// <summary>
