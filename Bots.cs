@@ -49,7 +49,9 @@ namespace Proyecto1JuegoTron
             // Timer para el movimiento de los bots
             _timerBots = new System.Windows.Forms.Timer();
             _timerBots.Interval = 500 / _velocidadBot; // Movimiento cada 200ms
+#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
             _timerBots.Tick += new EventHandler(TimerBots_Tick);
+#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
             _timerBots.Start();
         }
 

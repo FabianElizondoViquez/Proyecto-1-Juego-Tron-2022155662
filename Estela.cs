@@ -12,6 +12,20 @@ namespace Proyecto1JuegoTron
             Nodo = nodo;
             Siguiente = null;
         }
+
+        internal void AgregarNodo(Nodo posicionMoto)
+        {
+            Estela actual = this;
+
+            // Recorremos la estela hasta encontrar el último nodo
+            while (actual.Siguiente != null)
+            {
+                actual = actual.Siguiente;
+            }
+
+            // Agregamos un nuevo nodo al final de la estela
+            actual.Siguiente = new Estela(posicionMoto);
+        }
     }
     public partial class Form1 : Form
     {

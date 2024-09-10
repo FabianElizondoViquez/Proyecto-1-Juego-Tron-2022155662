@@ -43,6 +43,11 @@ namespace Proyecto1JuegoTron
             CrearGrid();
             InicializarBots();  // Inicializar bots
             CargarMoto();
+            
+            InicializarItems();
+            CrearItemAleatorio();
+            ConfigurarTimerItems();
+
             this.KeyDown += new KeyEventHandler(Form1_KeyDown);
             _estelaMoto = new Estela(_posicionMoto);
             _estelaMoto.Siguiente = new Estela(_posicionMoto);

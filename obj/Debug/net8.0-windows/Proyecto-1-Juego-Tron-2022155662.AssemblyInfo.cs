@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Proyecto-1-Juego-Tron-2022155662")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7f57749d2a89d8c38683c582fc7e908b0dce104d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9c0e2d7a76a7ef664fa7da1f6ef1e6c25354d89a")]
 [assembly: System.Reflection.AssemblyProductAttribute("Proyecto-1-Juego-Tron-2022155662")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Proyecto-1-Juego-Tron-2022155662")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
