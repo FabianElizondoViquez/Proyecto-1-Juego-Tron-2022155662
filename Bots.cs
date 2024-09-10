@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Proyecto1JuegoTron
 {
@@ -44,9 +45,10 @@ namespace Proyecto1JuegoTron
                 _estelasBots[i] = new List<Nodo>();  // Inicializamos una lista vacía para la estela de cada bot
             }
 
+            _velocidadBot = _randomBot.Next(1, 11); // Velocidad aleatoria entre 1 y 10
             // Timer para el movimiento de los bots
             _timerBots = new System.Windows.Forms.Timer();
-            _timerBots.Interval = 200; // Movimiento cada 200ms
+            _timerBots.Interval = 500 / _velocidadBot; // Movimiento cada 200ms
             _timerBots.Tick += new EventHandler(TimerBots_Tick);
             _timerBots.Start();
         }
@@ -104,10 +106,9 @@ namespace Proyecto1JuegoTron
 
             for (int i = 0; i < _posicionesBots.Length; i++)
             {
-                // Verificar si la nueva posición está ocupada por otro bot
-                if (nuevasPosiciones[i] != null && !EsPosicionOcupadaPorOtroBot(nuevasPosiciones[i]))
+                // Agregar la posición actual a la estela
+                if (_estelasBots[i] != null)
                 {
-                    // Agregar la posición actual a la estela
                     _estelasBots[i].Insert(0, _posicionesBots[i]);
 
                     // Limitar la estela a 3 nodos
@@ -115,19 +116,27 @@ namespace Proyecto1JuegoTron
                     {
                         _estelasBots[i].RemoveAt(_estelasBots[i].Count - 1);
                     }
+                }
 
+                if (nuevasPosiciones[i] != null && !EsPosicionOcupadaPorOtroBot(nuevasPosiciones[i]))
+                {
                     // Actualizar la posición del bot
                     _posicionesBots[i] = nuevasPosiciones[i];
+                    
+                    // Cambiar dirección de forma aleatoria
+                    if (--_pasosRestantesBots[i] <= 0)
+                    {
+                        _direccionesBots[i] = _randomBot.Next(0, 4); // Nueva dirección aleatoria
+                        _angulosRotacionBots[i] = DireccionARotacion(_direccionesBots[i]); // Actualizar ángulo de rotación
+                        _pasosRestantesBots[i] = _randomBot.Next(5, 15); // Nuevos pasos restantes antes del próximo cambio
+                    }
                 }
                 else
                 {
-                    // Si la nueva posición está ocupada, no mover el bot
-                    // Podrías hacer que el bot cambie de dirección aquí si lo deseas
-                    // _direccionesBots[i] = _randomBot.Next(0, 4);
+                    // Si la nueva posición está ocupada, el bot cambia de dirección aleatoriamente
+                    _direccionesBots[i] = _randomBot.Next(0, 4);
+                    _angulosRotacionBots[i] = DireccionARotacion(_direccionesBots[i]);
                 }
-
-                // Reducir el número de pasos restantes para este bot
-                _pasosRestantesBots[i]--;
             }
 
             this.Invalidate(); // Redibujar la ventana para actualizar la posición de los bots

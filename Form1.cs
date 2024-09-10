@@ -18,6 +18,7 @@ namespace Proyecto1JuegoTron
         private System.Windows.Forms.Timer _timerMoto;// Timer para controlar el movimiento de la moto
         private Random _random;                       // Generador de números aleatorios
         private int _velocidadMoto;                   // Velocidad de la moto del jugador
+        private int _velocidadBot;
         private int _combustibleMoto;                 // Nivel de combustible de la moto del jugador
         private Font _font;                           // Fuente para dibujar texto en la interfaz
         private Brush _brush;                         // Pincel para dibujar texto en la interfaz
@@ -53,7 +54,7 @@ namespace Proyecto1JuegoTron
             _nodosRecorridos = 0;
 
             _timerMoto = new System.Windows.Forms.Timer();
-            _timerMoto.Interval = 1100 / _velocidadMoto; // Intervalo de tiempo basado en la velocidad
+            _timerMoto.Interval = 500 / _velocidadMoto; // Intervalo de tiempo basado en la velocidad
             _timerMoto.Tick += new EventHandler(Timer_Tick);
             _timerMoto.Start();
         }
