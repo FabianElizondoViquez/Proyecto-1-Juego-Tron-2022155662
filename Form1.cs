@@ -79,6 +79,17 @@ namespace Proyecto1JuegoTron
             _infoPanel.Invalidate(); // Solicita redibujar el panel de información
         }
 
+        private void DibujarEstela(Graphics g)
+        {
+            Estela actual = _estelaMoto;
+            while (actual != null)
+            {
+                Nodo nodo = actual.Nodo;
+                g.FillRectangle(Brushes.Turquoise, nodo.Y * _tamañoNodo, nodo.X * _tamañoNodo, _tamañoNodo, _tamañoNodo);
+                actual = actual.Siguiente;
+            }
+        }
+
         private void PanelInfo_Paint(object sender, PaintEventArgs e)
         {
             string velocidadTexto = $"Velocidad: {_velocidadMoto}";

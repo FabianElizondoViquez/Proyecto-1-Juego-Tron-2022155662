@@ -6,10 +6,12 @@ namespace Proyecto1JuegoTron
     public partial class Form1 : Form
     {
         public int _nodosRecorridos;
+
         private void Form1_Resize(object sender, EventArgs e)
         {
             CrearGrid();
         }
+
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -28,6 +30,7 @@ namespace Proyecto1JuegoTron
                     break;
             }
         }
+
         private void Timer_Tick(object sender, EventArgs e)
         {
             if (_combustibleMoto > 0)
@@ -71,7 +74,7 @@ namespace Proyecto1JuegoTron
                     _posicionMoto = nuevoNodo;
 
                     _nodosRecorridos++;
-                    
+
                     if (_nodosRecorridos % 5 == 0)
                     {
                         _combustibleMoto--;
@@ -84,6 +87,7 @@ namespace Proyecto1JuegoTron
                         MessageBox.Show("La moto se ha quedado sin combustible.");
                     }
                     VerificarColisiones();
+                    VerificarColisionConItems(); // Verificar colisión con items
                     this.Invalidate();
                 }
             }

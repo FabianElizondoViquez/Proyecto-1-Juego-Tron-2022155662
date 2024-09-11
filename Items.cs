@@ -31,11 +31,10 @@ namespace Proyecto1JuegoTron
     public partial class Form1 : Form
     {
         private Queue<Item> _colaItems; // Cola de items para aplicar a la moto
-        private bool _procesandoItems;private System.Windows.Forms.Timer _timerCrearItems;
+        private bool _procesandoItems;
+        private System.Windows.Forms.Timer _timerCrearItems;
         private List<Item> _itemsEnGrid;
         private int _gridAncho, _gridAlto;
-
-
 
         private void InicializarItems()
         {
@@ -46,6 +45,7 @@ namespace Proyecto1JuegoTron
             _gridAlto = 15;
             ConfigurarTimerItems();
         }
+
         private void ConfigurarTimerItems()
         {
             _timerCrearItems = new System.Windows.Forms.Timer();
@@ -71,12 +71,12 @@ namespace Proyecto1JuegoTron
             _itemsEnGrid.Add(nuevoItem);
             DibujarItem(nuevoItem);
         }
+
         private void DibujarItem(Item item)
         {
-
             PictureBox picItem = new PictureBox
             {
-                Size = new Size(20, 20),
+                Size = new Size(_tamañoNodo, _tamañoNodo), // Cambiar tamaño del item al tamaño del nodo
                 Location = new Point(item.PosicionX * _tamañoNodo, item.PosicionY * _tamañoNodo),
                 BackColor = ObtenerColorItem(item.Tipo),
                 Tag = item
@@ -84,20 +84,21 @@ namespace Proyecto1JuegoTron
 
             this.Controls.Add(picItem);
         }
+
         private Color ObtenerColorItem(TipoItem tipo)
-    {
-        switch (tipo)
         {
-            case TipoItem.CeldaCombustible:
-                return Color.Green;
-            case TipoItem.CrecimientoEstela:
-                return Color.Blue;
-            case TipoItem.Bomba:
-                return Color.Red;
-            default:
-                return Color.Black;
+            switch (tipo)
+            {
+                case TipoItem.CeldaCombustible:
+                    return Color.Green;
+                case TipoItem.CrecimientoEstela:
+                    return Color.Blue;
+                case TipoItem.Bomba:
+                    return Color.Red;
+                default:
+                    return Color.Black;
+            }
         }
-    }
 
         private async void ProcesarItems()
         {
@@ -132,10 +133,8 @@ namespace Proyecto1JuegoTron
                         break;
 
                     case TipoItem.Bomba:
-                        MessageBox.Show("¡Bomba! La moto explotó.");
-                        // Aquí puedes añadir el efecto de explotar la moto o reiniciar el juego
+                        FinDelJuego(); // Terminar el juego
                         break;
-
                 }
 
                 _infoPanel.Invalidate(); // Redibujar la información en pantalla
@@ -143,9 +142,10 @@ namespace Proyecto1JuegoTron
 
             _procesandoItems = false;
         }
+
         private void VerificarColisionConItems()
         {
-            Rectangle rectMoto = new Rectangle(_posicionMoto.X * _tamañoNodo, _posicionMoto.Y * _tamañoNodo, _tamañoNodo, _tamañoNodo);
+            Rectangle rectMoto = new Rectangle(_posicionMoto.Y * _tamañoNodo, _posicionMoto.X * _tamañoNodo, _tamañoNodo, _tamañoNodo);
 
             foreach (Control control in this.Controls)
             {
@@ -161,6 +161,7 @@ namespace Proyecto1JuegoTron
                 }
             }
         }
+
         private void AplicarEfectoItem(Item item)
         {
             switch (item.Tipo)
@@ -182,13 +183,14 @@ namespace Proyecto1JuegoTron
                     break;
 
                 case TipoItem.Bomba:
+                    FinDelJuego(); // Terminar el juego
                     MessageBox.Show("¡Bomba! La moto explotó.");
-                    // Aquí puedes añadir el efecto de explotar la moto o reiniciar el juego
                     break;
             }
 
             _infoPanel.Invalidate();
         }
+
         private void ActualizarJuego()
         {
             // ... código para mover la moto ...
@@ -196,6 +198,6 @@ namespace Proyecto1JuegoTron
             VerificarColisionConItems();
 
             // ... resto de la lógica del juego ...
-        } 
+        }
     }
 }
