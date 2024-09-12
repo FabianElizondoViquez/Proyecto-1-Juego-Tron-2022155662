@@ -9,22 +9,61 @@ namespace Proyecto1JuegoTron
     {
         private void VerificarColisiones()
         {
-            // Verificar colisión con estelas de los bots
-            foreach (var estela in _estelasBots)
+            try
             {
-                if (estela.Any(nodo => nodo != null && nodo.X == _posicionMoto.X && nodo.Y == _posicionMoto.Y))
+                // Verificar colisión de la moto del jugador con estelas de los bots
+                for (int i = 0; i < _posicionesBots.Length; i++)
+                {
+                    if (_posicionesBots[i] != null && _estelasBots[i] != null)
+                    {
+                        if (_estelasBots[i].Any(nodo => nodo != null && nodo.X == _posicionMoto.X && nodo.Y == _posicionMoto.Y))
+                        {
+                            FinDelJuego();
+                            return;
+                        }
+                    }
+                }
+
+                // Verificar colisión de la moto del jugador con los bots
+                if (_posicionesBots.Any(bot => bot != null && bot.X == _posicionMoto.X && bot.Y == _posicionMoto.Y))
                 {
                     FinDelJuego();
                     return;
                 }
-            }
 
-            // Verificar colisión con los bots
-            if (_posicionesBots.Any(bot => bot != null && bot.X == _posicionMoto.X && bot.Y == _posicionMoto.Y))
-            {
-                FinDelJuego();
-                return;
+                // Verificar colisión de los bots con la estela del jugador
+                Estela estelaJugador = _estelaMoto;
+                while (estelaJugador != null)
+                {
+                    for (int i = 0; i < _posicionesBots.Length; i++)
+                    {
+                        if (_posicionesBots[i] != null && 
+                            _posicionesBots[i].X == estelaJugador.Nodo.X && 
+                            _posicionesBots[i].Y == estelaJugador.Nodo.Y)
+                        {
+                            Console.WriteLine($"Colisión detectada: Bot {i} en ({_posicionesBots[i].X}, {_posicionesBots[i].Y})");
+                            EliminarBot(i);
+                        }
+                    }
+                    estelaJugador = estelaJugador.Siguiente;
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en VerificarColisiones: {ex.Message}\nStack Trace: {ex.StackTrace}");
+            }
+        }
+
+        private void EliminarBot(int indice)
+        {
+            Console.WriteLine($"Eliminando Bot {indice}");
+            _posicionesBots[indice] = null;
+            if (_estelasBots[indice] != null)
+            {
+                _estelasBots[indice].Clear();
+            }
+            Console.WriteLine($"Bot {indice} eliminado");
+            this.Invalidate(); // Redibujar el formulario
         }
 
         private void FinDelJuego()

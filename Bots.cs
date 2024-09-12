@@ -99,66 +99,92 @@ namespace Proyecto1JuegoTron
 
         private void TimerBots_Tick(object sender, EventArgs e)
         {
-            // Crear una lista para las nuevas posiciones de los bots
-            Nodo[] nuevasPosiciones = new Nodo[_posicionesBots.Length];
-            for (int i = 0; i < _posicionesBots.Length; i++)
+            try
             {
-                nuevasPosiciones[i] = MoverBotEnDireccion(_posicionesBots[i], _direccionesBots[i]);
-            }
-
-            for (int i = 0; i < _posicionesBots.Length; i++)
-            {
-                // Agregar la posición actual a la estela
-                if (_estelasBots[i] != null)
+                // Crear una lista para las nuevas posiciones de los bots
+                Nodo[] nuevasPosiciones = new Nodo[_posicionesBots.Length];
+                for (int i = 0; i < _posicionesBots.Length; i++)
                 {
-                    _estelasBots[i].Insert(0, _posicionesBots[i]);
-
-                    // Limitar la estela a 3 nodos
-                    if (_estelasBots[i].Count > 3)
+                    if (_posicionesBots[i] != null)
                     {
-                        _estelasBots[i].RemoveAt(_estelasBots[i].Count - 1);
+                        nuevasPosiciones[i] = MoverBotEnDireccion(_posicionesBots[i], _direccionesBots[i]);
                     }
                 }
 
-                if (nuevasPosiciones[i] != null && !EsPosicionOcupadaPorOtroBot(nuevasPosiciones[i]))
+                for (int i = 0; i < _posicionesBots.Length; i++)
                 {
-                    // Actualizar la posición del bot
-                    _posicionesBots[i] = nuevasPosiciones[i];
-                    
-                    // Cambiar dirección de forma aleatoria
-                    if (--_pasosRestantesBots[i] <= 0)
+                    // Agregar la posición actual a la estela
+                    if (_estelasBots[i] != null)
                     {
-                        _direccionesBots[i] = _randomBot.Next(0, 4); // Nueva dirección aleatoria
-                        _angulosRotacionBots[i] = DireccionARotacion(_direccionesBots[i]); // Actualizar ángulo de rotación
-                        _pasosRestantesBots[i] = _randomBot.Next(5, 15); // Nuevos pasos restantes antes del próximo cambio
+                        _estelasBots[i].Insert(0, _posicionesBots[i]);
+
+                        // Limitar la estela a 3 nodos
+                        if (_estelasBots[i].Count > 3)
+                        {
+                            _estelasBots[i].RemoveAt(_estelasBots[i].Count - 1);
+                        }
+                    }
+
+                    if (nuevasPosiciones[i] != null && !EsPosicionOcupadaPorOtroBot(nuevasPosiciones[i]))
+                    {
+                        // Actualizar la posición del bot
+                        _posicionesBots[i] = nuevasPosiciones[i];
+                        
+                        // Cambiar dirección de forma aleatoria
+                        if (--_pasosRestantesBots[i] <= 0)
+                        {
+                            _direccionesBots[i] = _randomBot.Next(0, 4); // Nueva dirección aleatoria
+                            _angulosRotacionBots[i] = DireccionARotacion(_direccionesBots[i]); // Actualizar ángulo de rotación
+                            _pasosRestantesBots[i] = _randomBot.Next(5, 15); // Nuevos pasos restantes antes del próximo cambio
+                        }
+                    }
+                    else
+                    {
+                        // Si la nueva posición está ocupada, el bot cambia de dirección aleatoriamente
+                        _direccionesBots[i] = _randomBot.Next(0, 4);
+                        _angulosRotacionBots[i] = DireccionARotacion(_direccionesBots[i]);
                     }
                 }
-                else
-                {
-                    // Si la nueva posición está ocupada, el bot cambia de dirección aleatoriamente
-                    _direccionesBots[i] = _randomBot.Next(0, 4);
-                    _angulosRotacionBots[i] = DireccionARotacion(_direccionesBots[i]);
-                }
-            }
 
-            this.Invalidate(); // Redibujar la ventana para actualizar la posición de los bots
+                VerificarColisiones(); // Añade esta línea aquí
+
+                this.Invalidate(); // Redibujar la ventana para actualizar la posición de los bots
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en TimerBots_Tick: {ex.Message}\nStack Trace: {ex.StackTrace}");
+            }
         }
 
         private Nodo MoverBotEnDireccion(Nodo posicionActual, int direccion)
         {
-            // Movimiento en las cuatro direcciones del grid, sin restricciones de colisión
-            switch (direccion)
+            if (posicionActual == null || _grid == null)
             {
-                case 0: // Arriba
-                    return _grid.ObtenerNodo(posicionActual.X - 1 < 0 ? _grid.Filas - 1 : posicionActual.X - 1, posicionActual.Y);
-                case 1: // Derecha
-                    return _grid.ObtenerNodo(posicionActual.X, posicionActual.Y + 1 >= _grid.Columnas ? 0 : posicionActual.Y + 1);
-                case 2: // Abajo
-                    return _grid.ObtenerNodo(posicionActual.X + 1 >= _grid.Filas ? 0 : posicionActual.X + 1, posicionActual.Y);
-                case 3: // Izquierda
-                    return _grid.ObtenerNodo(posicionActual.X, posicionActual.Y - 1 < 0 ? _grid.Columnas - 1 : posicionActual.Y - 1);
-                default:
-                    return null;
+                Console.WriteLine("Error: posicionActual o _grid es null en MoverBotEnDireccion");
+                return null;
+            }
+
+            try
+            {
+                switch (direccion)
+                {
+                    case 0: // Arriba
+                        return _grid.ObtenerNodo(posicionActual.X - 1 < 0 ? _grid.Filas - 1 : posicionActual.X - 1, posicionActual.Y);
+                    case 1: // Derecha
+                        return _grid.ObtenerNodo(posicionActual.X, posicionActual.Y + 1 >= _grid.Columnas ? 0 : posicionActual.Y + 1);
+                    case 2: // Abajo
+                        return _grid.ObtenerNodo(posicionActual.X + 1 >= _grid.Filas ? 0 : posicionActual.X + 1, posicionActual.Y);
+                    case 3: // Izquierda
+                        return _grid.ObtenerNodo(posicionActual.X, posicionActual.Y - 1 < 0 ? _grid.Columnas - 1 : posicionActual.Y - 1);
+                    default:
+                        Console.WriteLine($"Dirección inválida en MoverBotEnDireccion: {direccion}");
+                        return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en MoverBotEnDireccion: {ex.Message}");
+                return null;
             }
         }
 
