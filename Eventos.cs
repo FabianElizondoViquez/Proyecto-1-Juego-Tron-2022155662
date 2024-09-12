@@ -6,6 +6,7 @@ namespace Proyecto1JuegoTron
     public partial class Form1 : Form
     {
         public int _nodosRecorridos;
+        private int _longitudEstela;
 
         private void Form1_Resize(object sender, EventArgs e)
         {
@@ -59,9 +60,10 @@ namespace Proyecto1JuegoTron
                     nuevaEstela.Siguiente = _estelaMoto;
                     _estelaMoto = nuevaEstela;
 
+                    // Limitar la longitud de la estela
                     Estela tempEstela = _estelaMoto;
                     int count = 0;
-                    while (tempEstela != null && count < 3)
+                    while (tempEstela != null && count < _longitudEstela - 1)
                     {
                         tempEstela = tempEstela.Siguiente;
                         count++;

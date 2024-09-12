@@ -35,21 +35,26 @@ namespace Proyecto1JuegoTron
         private System.Windows.Forms.Timer _timerCrearItems;
         private List<Item> _itemsEnGrid;
         private int _gridAncho, _gridAlto;
+        private Random _randomItem;
+        private int _timerItemrandom;
+
 
         private void InicializarItems()
         {
             _colaItems = new Queue<Item>();
             _itemsEnGrid = new List<Item>();
             _procesandoItems = false;
-            _gridAncho = 100; // Ajusta según el tamaño de tu grid
-            _gridAlto = 130;
+            _gridAncho = 120; // Ajusta según el tamaño de tu grid
+            _gridAlto = 100;
             ConfigurarTimerItems();
         }
 
         private void ConfigurarTimerItems()
         {
+            _randomItem = new Random();
+            _timerItemrandom = _randomItem.Next(1000, 10000);
             _timerCrearItems = new System.Windows.Forms.Timer();
-            _timerCrearItems.Interval = 5000; // Crear un item cada 5 segundos
+            _timerCrearItems.Interval = _timerItemrandom; // Crear un item cada 5 segundos
             _timerCrearItems.Tick += (sender, e) => CrearItemAleatorio();
             _timerCrearItems.Start();
         }
@@ -113,10 +118,8 @@ namespace Proyecto1JuegoTron
                     break;
 
                 case TipoItem.CrecimientoEstela:
-                    for (int i = 0; i < item.Valor; i++)
-                    {
-                        _estelaMoto.AgregarNodo(new Nodo(_posicionMoto.X, _posicionMoto.Y));
-                    }
+                    _longitudEstela += item.Valor;
+                    Console.WriteLine($"Longitud de estela aumentada a: {_longitudEstela}"); // Mensaje de depuración
                     break;
 
                 case TipoItem.Bomba:

@@ -23,6 +23,7 @@ namespace Proyecto1JuegoTron
         private Font _font;                           // Fuente para dibujar texto en la interfaz
         private Brush _brush;                         // Pincel para dibujar texto en la interfaz
         private Panel _infoPanel;                     // Panel que muestra información de la moto (velocidad, combustible)
+
         public Form1()
         {
             InitializeComponent();
@@ -38,6 +39,7 @@ namespace Proyecto1JuegoTron
             _font = new Font("Arial", 12);
             _brush = Brushes.White;
             _anguloRotacion = 0;
+            _longitudEstela = 3;
             this.DoubleBuffered = true; // Evita el parpadeo durante el redibujado
             this.Resize += new EventHandler(Form1_Resize);
             CrearGrid();
@@ -82,12 +84,15 @@ namespace Proyecto1JuegoTron
         private void DibujarEstela(Graphics g)
         {
             Estela actual = _estelaMoto;
-            while (actual != null)
+            int contador = 0;
+            while (actual != null && contador < _longitudEstela)
             {
                 Nodo nodo = actual.Nodo;
                 g.FillRectangle(Brushes.White, nodo.Y * _tamañoNodo, nodo.X * _tamañoNodo, _tamañoNodo, _tamañoNodo);
                 actual = actual.Siguiente;
+                contador++;
             }
+            Console.WriteLine($"Nodos dibujados en la estela: {contador}"); // Mensaje de depuración
         }
 
         private void PanelInfo_Paint(object sender, PaintEventArgs e)
