@@ -41,8 +41,8 @@ namespace Proyecto1JuegoTron
             _colaItems = new Queue<Item>();
             _itemsEnGrid = new List<Item>();
             _procesandoItems = false;
-            _gridAncho = 20; // Ajusta según el tamaño de tu grid
-            _gridAlto = 15;
+            _gridAncho = 100; // Ajusta según el tamaño de tu grid
+            _gridAlto = 130;
             ConfigurarTimerItems();
         }
 
@@ -67,7 +67,6 @@ namespace Proyecto1JuegoTron
             Item nuevoItem = new Item(tipo, valor);
             nuevoItem.PosicionX = gridX;
             nuevoItem.PosicionY = gridY;
-            _colaItems.Enqueue(nuevoItem);
             _itemsEnGrid.Add(nuevoItem);
             DibujarItem(nuevoItem);
         }
@@ -100,69 +99,7 @@ namespace Proyecto1JuegoTron
             }
         }
 
-        private async void ProcesarItems()
-        {
-            _procesandoItems = true;
-
-            while (_colaItems.Count > 0)
-            {
-                Item itemActual = _colaItems.Dequeue();
-                await Task.Delay(1000); // Delay de 1 segundo entre la aplicación de los items
-
-                switch (itemActual.Tipo)
-                {
-                    case TipoItem.CeldaCombustible:
-                        if (_combustibleMoto < 100)
-                        {
-                            _combustibleMoto += itemActual.Valor;
-                            if (_combustibleMoto > 100)
-                                _combustibleMoto = 100; // Límite máximo del combustible
-                        }
-                        else
-                        {
-                            _colaItems.Enqueue(itemActual); // Reinsertar si el combustible está lleno
-                        }
-                        break;
-
-                    case TipoItem.CrecimientoEstela:
-                        int incremento = itemActual.Valor;
-                        for (int i = 0; i < incremento; i++)
-                        {
-                            _estelaMoto.AgregarNodo(_posicionMoto); // Aumentar estela
-                        }
-                        break;
-
-                    case TipoItem.Bomba:
-                        FinDelJuego(); // Terminar el juego
-                        break;
-                }
-
-                _infoPanel.Invalidate(); // Redibujar la información en pantalla
-            }
-
-            _procesandoItems = false;
-        }
-
-        private void VerificarColisionConItems()
-        {
-            Rectangle rectMoto = new Rectangle(_posicionMoto.Y * _tamañoNodo, _posicionMoto.X * _tamañoNodo, _tamañoNodo, _tamañoNodo);
-
-            foreach (Control control in this.Controls)
-            {
-                if (control is PictureBox picBox && picBox.Tag is Item item)
-                {
-                    if (rectMoto.IntersectsWith(picBox.Bounds))
-                    {
-                        AplicarEfectoItem(item);
-                        this.Controls.Remove(picBox);
-                        _itemsEnGrid.Remove(item);
-                        break;
-                    }
-                }
-            }
-        }
-
-        private void AplicarEfectoItem(Item item)
+        private void ProcesarYAplicarEfectoItem(Item item)
         {
             switch (item.Tipo)
             {
@@ -178,17 +115,42 @@ namespace Proyecto1JuegoTron
                 case TipoItem.CrecimientoEstela:
                     for (int i = 0; i < item.Valor; i++)
                     {
-                        _estelaMoto.AgregarNodo(_posicionMoto);
+                        _estelaMoto.AgregarNodo(new Nodo(_posicionMoto.X, _posicionMoto.Y));
                     }
                     break;
 
                 case TipoItem.Bomba:
-                    FinDelJuego(); // Terminar el juego
+                    _timerMoto.Stop();
+                    if (_timerBots != null)
+                    {
+                        _timerBots.Stop();
+                    }
+
                     MessageBox.Show("¡Bomba! La moto explotó.");
+                    FinDelJuego(); // Terminar el juego
                     break;
             }
 
             _infoPanel.Invalidate();
+        }
+
+        private void VerificarColisionConItems()
+        {
+            Rectangle rectMoto = new Rectangle(_posicionMoto.Y * _tamañoNodo, _posicionMoto.X * _tamañoNodo, _tamañoNodo, _tamañoNodo);
+
+            foreach (Control control in this.Controls)
+            {
+                if (control is PictureBox picBox && picBox.Tag is Item item)
+                {
+                    if (rectMoto.IntersectsWith(picBox.Bounds))
+                    {
+                        this.Controls.Remove(picBox);
+                        _itemsEnGrid.Remove(item);
+                        ProcesarYAplicarEfectoItem(item); // Aplicar efecto del item
+                        break;
+                    }
+                }
+            }
         }
 
         private void ActualizarJuego()

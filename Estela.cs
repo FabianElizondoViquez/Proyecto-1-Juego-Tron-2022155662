@@ -7,13 +7,14 @@ namespace Proyecto1JuegoTron
     {
         public Nodo Nodo { get; set; }
         public Estela Siguiente { get; set; }
+
         public Estela(Nodo nodo)
         {
             Nodo = nodo;
             Siguiente = null;
         }
 
-        internal void AgregarNodo(Nodo posicionMoto)
+        public void AgregarNodo(Nodo nuevoNodo)
         {
             Estela actual = this;
 
@@ -24,7 +25,7 @@ namespace Proyecto1JuegoTron
             }
 
             // Agregamos un nuevo nodo al final de la estela
-            actual.Siguiente = new Estela(posicionMoto);
+            actual.Siguiente = new Estela(nuevoNodo);
         }
     }
 }

@@ -84,7 +84,12 @@ namespace Proyecto1JuegoTron
                     {
                         _combustibleMoto = 0;
                         _timerMoto.Stop();
+                        if (_timerBots != null)
+                        {
+                            _timerBots.Stop();
+                        }
                         MessageBox.Show("La moto se ha quedado sin combustible.");
+                        FinDelJuego();
                     }
                     VerificarColisiones();
                     VerificarColisionConItems(); // Verificar colisión con items
