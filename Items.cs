@@ -149,10 +149,52 @@ namespace Proyecto1JuegoTron
                     {
                         this.Controls.Remove(picBox);
                         _itemsEnGrid.Remove(item);
-                        ProcesarYAplicarEfectoItem(item); // Aplicar efecto del item
+                        ProcesarYAplicarEfectoItem(item); // Aplicar efecto del item a la moto del jugador
                         break;
                     }
+
+                    // Verificar colisión con bots
+                    for (int i = 0; i < _posicionesBots.Length; i++)
+                    {
+                        if (_posicionesBots[i] != null)
+                        {
+                            Rectangle rectBot = new Rectangle(_posicionesBots[i].Y * _tamañoNodo, _posicionesBots[i].X * _tamañoNodo, _tamañoNodo, _tamañoNodo);
+                            if (rectBot.IntersectsWith(picBox.Bounds))
+                            {
+                                this.Controls.Remove(picBox);
+                                _itemsEnGrid.Remove(item);
+                                ProcesarYAplicarEfectoItemBot(item, i); // Aplicar efecto del item al bot
+                                break;
+                            }
+                        }
+                    }
                 }
+            }
+        }
+
+        private void ProcesarYAplicarEfectoItemBot(Item item, int indiceBot)
+        {
+            switch (item.Tipo)
+            {
+                case TipoItem.CeldaCombustible:
+                    // Los bots no usan combustible, pero puedes agregar algún efecto si lo deseas
+                    break;
+
+                case TipoItem.CrecimientoEstela:
+                    // Aumentar la longitud de la estela del bot
+                    if (_estelasBots[indiceBot] != null)
+                    {
+                        for (int j = 0; j < item.Valor; j++)
+                        {
+                            _estelasBots[indiceBot].Insert(0, _posicionesBots[indiceBot]);
+                        }
+                    }
+                    break;
+
+                case TipoItem.Bomba:
+                    // Eliminar el bot
+                    EliminarBot(indiceBot);
+                    break;
             }
         }
 

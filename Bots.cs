@@ -147,6 +147,7 @@ namespace Proyecto1JuegoTron
                 }
 
                 VerificarColisiones(); // Añade esta línea aquí
+                VerificarColisionConItems(); // Añade esta línea aquí
 
                 this.Invalidate(); // Redibujar la ventana para actualizar la posición de los bots
             }
