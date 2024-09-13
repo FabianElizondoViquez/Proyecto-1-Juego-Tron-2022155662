@@ -64,6 +64,8 @@ namespace Proyecto1JuegoTron
             _timerMoto.Interval = 500 / _velocidadMoto; // Intervalo de tiempo basado en la velocidad
             _timerMoto.Tick += new EventHandler(Timer_Tick);
             _timerMoto.Start();
+
+            _timerNuevoBot.Start();
         }
 
         protected override void OnPaint(PaintEventArgs e)

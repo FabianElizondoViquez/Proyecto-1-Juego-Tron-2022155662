@@ -15,10 +15,12 @@ namespace Proyecto1JuegoTron
         private Random _randomBot;                      // Generador de números aleatorios para los bots
         private System.Windows.Forms.Timer _timerBots;  // Timer para controlar el movimiento de los bots
         private List<Nodo>[] _estelasBots;              // Estelas de cada bot (cada lista contiene los nodos de la estela)
+        private System.Windows.Forms.Timer _timerNuevoBot;  // Timer para controlar la aparición del nuevo bot
+        private const int TIEMPO_NUEVO_BOT = 60000;  // 60000 ms = 1 minuto
 
         private void InicializarBots()
         {
-            _posicionesBots = new Nodo[4];              // Cuatro bots
+            _posicionesBots = new Nodo[4];              // Inicialmente 4 bots
             _direccionesBots = new int[4];              // Direcciones de movimiento de los bots
             _pasosRestantesBots = new int[4];           // Pasos que darán antes de cambiar de dirección
             _angulosRotacionBots = new float[4];        // Ángulos de rotación de cada bot (0, 90, 180, 270 grados)
@@ -53,6 +55,12 @@ namespace Proyecto1JuegoTron
             _timerBots.Tick += new EventHandler(TimerBots_Tick);
 #pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
             _timerBots.Start();
+
+            // Configurar el timer para el nuevo bot
+            _timerNuevoBot = new System.Windows.Forms.Timer();
+            _timerNuevoBot.Interval = TIEMPO_NUEVO_BOT;
+            _timerNuevoBot.Tick += new EventHandler(TimerNuevoBot_Tick);
+            _timerNuevoBot.Start();
         }
 
         private void DibujarBots(Graphics g)
@@ -218,6 +226,33 @@ namespace Proyecto1JuegoTron
                 }
             }
             return false;
+        }
+
+        private void TimerNuevoBot_Tick(object sender, EventArgs e)
+        {
+            AgregarNuevoBot();
+            _timerNuevoBot.Stop(); // Detener el timer después de agregar el bot
+        }
+
+        private void AgregarNuevoBot()
+        {
+            // Aumentar el tamaño de los arrays
+            Array.Resize(ref _posicionesBots, _posicionesBots.Length + 1);
+            Array.Resize(ref _direccionesBots, _direccionesBots.Length + 1);
+            Array.Resize(ref _pasosRestantesBots, _pasosRestantesBots.Length + 1);
+            Array.Resize(ref _angulosRotacionBots, _angulosRotacionBots.Length + 1);
+            Array.Resize(ref _estelasBots, _estelasBots.Length + 1);
+
+            int nuevoIndice = _posicionesBots.Length - 1;
+
+            // Inicializar el nuevo bot
+            _posicionesBots[nuevoIndice] = _grid.ObtenerNodo(_randomBot.Next(0, _grid.Filas), _randomBot.Next(0, _grid.Columnas));
+            _direccionesBots[nuevoIndice] = _randomBot.Next(0, 4);
+            _pasosRestantesBots[nuevoIndice] = _randomBot.Next(5, 15);
+            _angulosRotacionBots[nuevoIndice] = DireccionARotacion(_direccionesBots[nuevoIndice]);
+            _estelasBots[nuevoIndice] = new List<Nodo>();
+
+            Console.WriteLine($"Nuevo bot agregado. Total de bots: {_posicionesBots.Length}");
         }
     }
 }
