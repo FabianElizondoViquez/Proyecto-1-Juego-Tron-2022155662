@@ -88,7 +88,7 @@ namespace Proyecto1JuegoTron
             while (actual != null && contador < _longitudEstela)
             {
                 Nodo nodo = actual.Nodo;
-                g.FillRectangle(Brushes.White, nodo.Y * _tamañoNodo, nodo.X * _tamañoNodo, _tamañoNodo, _tamañoNodo);
+                g.FillRectangle(Brushes.Turquoise, nodo.Y * _tamañoNodo, nodo.X * _tamañoNodo, _tamañoNodo, _tamañoNodo);
                 actual = actual.Siguiente;
                 contador++;
             }
