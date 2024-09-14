@@ -60,7 +60,6 @@ namespace Proyecto1JuegoTron
                     nuevaEstela.Siguiente = _estelaMoto;
                     _estelaMoto = nuevaEstela;
 
-                    // Limitar la longitud de la estela
                     Estela tempEstela = _estelaMoto;
                     int count = 0;
                     while (tempEstela != null && count < _longitudEstela - 1)
@@ -94,7 +93,7 @@ namespace Proyecto1JuegoTron
                         FinDelJuego();
                     }
                     VerificarColisiones();
-                    VerificarColisionConItems(); // Verificar colisión con items
+                    VerificarColisionConItems();
                     this.Invalidate();
                 }
             }

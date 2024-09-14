@@ -5,7 +5,6 @@
         private System.ComponentModel.IContainer components = null;
         protected override void Dispose(bool disposing)
         {
-            // Si disposing es verdadero y los componentes no son nulos, se eliminan los componentes.
             if (disposing && (components != null))
             {
                 components.Dispose();
@@ -17,11 +16,11 @@
 
         private void InitializeComponent()
         {
-            this.SuspendLayout(); // Suspende el diseño del formulario mientras se configuran sus propiedades.
-            this.ClientSize = new System.Drawing.Size(1366, 768); // Tamaño de la ventana en píxeles
-            this.Name = "Form1"; // Nombre del formulario
-            this.Text = "Tron Game"; // Texto que aparece en la barra de título del formulario
-            this.ResumeLayout(false); // Reanuda el diseño del formulario después de la configuración.
+            this.SuspendLayout();
+            this.ClientSize = new System.Drawing.Size(1366, 768);
+            this.Name = "Form1";
+            this.Text = "Tron Game";
+            this.ResumeLayout(false);
         }
 
         #endregion

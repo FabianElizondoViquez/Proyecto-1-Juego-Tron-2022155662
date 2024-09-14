@@ -7,22 +7,22 @@ namespace Proyecto1JuegoTron
 {
     public partial class Form1 : Form
     {
-        private Grid _grid;                           // Grid que representa el campo de juego
-        private Image _motoAzul;                      // Imagen de la moto controlada por el jugador
-        private Nodo _posicionMoto;                   // Posición actual de la moto del jugador
-        private float _anguloRotacion;                // Ángulo de rotación de la moto del jugador
-        private int _tamañoNodo;                      // Tamaño de cada nodo en el grid
-        private int _anchoMoto;                       // Ancho de la moto en píxeles
-        private int _altoMoto;                        // Alto de la moto en píxeles                  // Alto del Bot en píxeles
-        private Estela _estelaMoto;                   // Estela dejada por la moto del jugador
-        private System.Windows.Forms.Timer _timerMoto;// Timer para controlar el movimiento de la moto
-        private Random _random;                       // Generador de números aleatorios
-        private int _velocidadMoto;                   // Velocidad de la moto del jugador
+        private Grid _grid;                           
+        private Image _motoAzul;                      
+        private Nodo _posicionMoto;                   
+        private float _anguloRotacion;                
+        private int _tamañoNodo;                      
+        private int _anchoMoto;                       
+        private int _altoMoto;                        
+        private Estela _estelaMoto;                   
+        private System.Windows.Forms.Timer _timerMoto;
+        private Random _random;                       
+        private int _velocidadMoto;                   
         private int _velocidadBot;
-        private int _combustibleMoto;                 // Nivel de combustible de la moto del jugador
-        private Font _font;                           // Fuente para dibujar texto en la interfaz
-        private Brush _brush;                         // Pincel para dibujar texto en la interfaz
-        private Panel _infoPanel;                     // Panel que muestra información de la moto (velocidad, combustible)
+        private int _combustibleMoto;                 
+        private Font _font;                           
+        private Brush _brush;                          
+        private Panel _infoPanel;                     
 
         public Form1()
         {
@@ -32,7 +32,7 @@ namespace Proyecto1JuegoTron
                 BackColor = Color.Black,
                 BorderStyle = BorderStyle.FixedSingle,
                 Size = new Size(200, 50),
-                Location = new Point(10, 10) // Ajusta la ubicación según sea necesario
+                Location = new Point(10, 10)
             };
             _infoPanel.Paint += new PaintEventHandler(PanelInfo_Paint);
             this.Controls.Add(_infoPanel);
@@ -40,10 +40,10 @@ namespace Proyecto1JuegoTron
             _brush = Brushes.White;
             _anguloRotacion = 0;
             _longitudEstela = 3;
-            this.DoubleBuffered = true; // Evita el parpadeo durante el redibujado
+            this.DoubleBuffered = true;
             this.Resize += new EventHandler(Form1_Resize);
             CrearGrid();
-            InicializarBots();  // Inicializar bots
+            InicializarBots();
             CargarMoto();
             
             InicializarItems();
@@ -56,12 +56,12 @@ namespace Proyecto1JuegoTron
             _estelaMoto.Siguiente.Siguiente = new Estela(_posicionMoto);
 
             _random = new Random();
-            _velocidadMoto = _random.Next(1, 11); // Velocidad aleatoria entre 1 y 10
-            _combustibleMoto = 100; // Valor inicial de combustible
+            _velocidadMoto = _random.Next(1, 11);
+            _combustibleMoto = 100;
             _nodosRecorridos = 0;
 
             _timerMoto = new System.Windows.Forms.Timer();
-            _timerMoto.Interval = 500 / _velocidadMoto; // Intervalo de tiempo basado en la velocidad
+            _timerMoto.Interval = 500 / _velocidadMoto;
             _timerMoto.Tick += new EventHandler(Timer_Tick);
             _timerMoto.Start();
 
@@ -71,16 +71,16 @@ namespace Proyecto1JuegoTron
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            e.Graphics.Clear(Color.Black); // Fondo del grid
+            e.Graphics.Clear(Color.Black);
 
             if (_grid != null)
             {
-                DibujarGrid(e.Graphics);    // Dibuja el grid
-                DibujarEstela(e.Graphics);  // Dibuja la estela de la moto
-                DibujarMoto(e.Graphics);    // Dibuja la moto del jugador
-                DibujarBots(e.Graphics);    // Dibuja los bots
+                DibujarGrid(e.Graphics);
+                DibujarEstela(e.Graphics);
+                DibujarMoto(e.Graphics);
+                DibujarBots(e.Graphics);
             }    
-            _infoPanel.Invalidate(); // Solicita redibujar el panel de información
+            _infoPanel.Invalidate();
         }
 
         private void DibujarEstela(Graphics g)
@@ -94,7 +94,7 @@ namespace Proyecto1JuegoTron
                 actual = actual.Siguiente;
                 contador++;
             }
-            Console.WriteLine($"Nodos dibujados en la estela: {contador}"); // Mensaje de depuración
+            Console.WriteLine($"Nodos dibujados en la estela: {contador}");
         }
 
         private void PanelInfo_Paint(object sender, PaintEventArgs e)

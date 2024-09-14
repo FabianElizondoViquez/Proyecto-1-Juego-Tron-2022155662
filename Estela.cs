@@ -18,13 +18,11 @@ namespace Proyecto1JuegoTron
         {
             Estela actual = this;
 
-            // Recorremos la estela hasta encontrar el último nodo
             while (actual.Siguiente != null)
             {
                 actual = actual.Siguiente;
             }
 
-            // Agregamos un nuevo nodo al final de la estela
             actual.Siguiente = new Estela(nuevoNodo);
         }
     }

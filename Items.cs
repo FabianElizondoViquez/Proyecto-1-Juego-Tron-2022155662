@@ -30,7 +30,7 @@ namespace Proyecto1JuegoTron
 
     public partial class Form1 : Form
     {
-        private Queue<Item> _colaItems; // Cola de items para aplicar a la moto
+        private Queue<Item> _colaItems;
         private bool _procesandoItems;
         private System.Windows.Forms.Timer _timerCrearItems;
         private List<Item> _itemsEnGrid;
@@ -44,7 +44,7 @@ namespace Proyecto1JuegoTron
             _colaItems = new Queue<Item>();
             _itemsEnGrid = new List<Item>();
             _procesandoItems = false;
-            _gridAncho = 120; // Ajusta según el tamaño de tu grid
+            _gridAncho = 120;
             _gridAlto = 100;
             ConfigurarTimerItems();
         }
@@ -54,7 +54,7 @@ namespace Proyecto1JuegoTron
             _randomItem = new Random();
             _timerItemrandom = _randomItem.Next(1000, 10000);
             _timerCrearItems = new System.Windows.Forms.Timer();
-            _timerCrearItems.Interval = _timerItemrandom; // Crear un item cada 5 segundos
+            _timerCrearItems.Interval = _timerItemrandom;
             _timerCrearItems.Tick += (sender, e) => CrearItemAleatorio();
             _timerCrearItems.Start();
         }
@@ -62,10 +62,10 @@ namespace Proyecto1JuegoTron
         private void CrearItemAleatorio()
         {
             Random random = new Random();
-            TipoItem tipo = (TipoItem)random.Next(0, 3); // 0 = CeldaCombustible, 1 = CrecimientoEstela, 2 = Bomba
+            TipoItem tipo = (TipoItem)random.Next(0, 3);
             int valor = tipo == TipoItem.CeldaCombustible
-                ? random.Next(10, 51) // Las celdas de combustible tienen entre 10 y 50 unidades
-                : random.Next(1, 11); // Crecimiento de estela o valor de la bomba
+                ? random.Next(10, 51)
+                : random.Next(1, 11);
             int gridX = random.Next(0, _gridAncho);
             int gridY = random.Next(0, _gridAlto);
 
@@ -80,7 +80,7 @@ namespace Proyecto1JuegoTron
         {
             PictureBox picItem = new PictureBox
             {
-                Size = new Size(_tamañoNodo, _tamañoNodo), // Cambiar tamaño del item al tamaño del nodo
+                Size = new Size(_tamañoNodo, _tamañoNodo),
                 Location = new Point(item.PosicionX * _tamañoNodo, item.PosicionY * _tamañoNodo),
                 BackColor = ObtenerColorItem(item.Tipo),
                 Tag = item
@@ -119,7 +119,7 @@ namespace Proyecto1JuegoTron
 
                 case TipoItem.CrecimientoEstela:
                     _longitudEstela += item.Valor;
-                    Console.WriteLine($"Longitud de estela aumentada a: {_longitudEstela}"); // Mensaje de depuración
+                    Console.WriteLine($"Longitud de estela aumentada a: {_longitudEstela}");
                     break;
 
                 case TipoItem.Bomba:
@@ -130,7 +130,7 @@ namespace Proyecto1JuegoTron
                     }
 
                     MessageBox.Show("¡Bomba! La moto explotó.");
-                    FinDelJuego(); // Terminar el juego
+                    FinDelJuego();
                     break;
             }
 
@@ -149,11 +149,10 @@ namespace Proyecto1JuegoTron
                     {
                         this.Controls.Remove(picBox);
                         _itemsEnGrid.Remove(item);
-                        ProcesarYAplicarEfectoItem(item); // Aplicar efecto del item a la moto del jugador
+                        ProcesarYAplicarEfectoItem(item);
                         break;
                     }
 
-                    // Verificar colisión con bots
                     for (int i = 0; i < _posicionesBots.Length; i++)
                     {
                         if (_posicionesBots[i] != null)
@@ -163,7 +162,7 @@ namespace Proyecto1JuegoTron
                             {
                                 this.Controls.Remove(picBox);
                                 _itemsEnGrid.Remove(item);
-                                ProcesarYAplicarEfectoItemBot(item, i); // Aplicar efecto del item al bot
+                                ProcesarYAplicarEfectoItemBot(item, i);
                                 break;
                             }
                         }
@@ -177,11 +176,9 @@ namespace Proyecto1JuegoTron
             switch (item.Tipo)
             {
                 case TipoItem.CeldaCombustible:
-                    // Los bots no usan combustible, pero puedes agregar algún efecto si lo deseas
                     break;
 
                 case TipoItem.CrecimientoEstela:
-                    // Aumentar la longitud de la estela del bot
                     if (_estelasBots[indiceBot] != null)
                     {
                         for (int j = 0; j < item.Valor; j++)
@@ -192,7 +189,6 @@ namespace Proyecto1JuegoTron
                     break;
 
                 case TipoItem.Bomba:
-                    // Eliminar el bot
                     EliminarBot(indiceBot);
                     break;
             }
@@ -200,11 +196,7 @@ namespace Proyecto1JuegoTron
 
         private void ActualizarJuego()
         {
-            // ... código para mover la moto ...
-
             VerificarColisionConItems();
-
-            // ... resto de la lógica del juego ...
         }
     }
 }

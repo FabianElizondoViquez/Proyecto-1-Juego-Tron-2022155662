@@ -11,7 +11,6 @@ namespace Proyecto1JuegoTron
         {
             try
             {
-                // Verificar colisión de la moto del jugador con estelas de los bots
                 for (int i = 0; i < _posicionesBots.Length; i++)
                 {
                     if (_posicionesBots[i] != null && _estelasBots[i] != null)
@@ -24,14 +23,12 @@ namespace Proyecto1JuegoTron
                     }
                 }
 
-                // Verificar colisión de la moto del jugador con los bots
                 if (_posicionesBots.Any(bot => bot != null && bot.X == _posicionMoto.X && bot.Y == _posicionMoto.Y))
                 {
                     FinDelJuego();
                     return;
                 }
 
-                // Verificar colisión de los bots con la estela del jugador
                 Estela estelaJugador = _estelaMoto;
                 while (estelaJugador != null)
                 {
@@ -63,22 +60,18 @@ namespace Proyecto1JuegoTron
                 _estelasBots[indice].Clear();
             }
             Console.WriteLine($"Bot {indice} eliminado");
-            this.Invalidate(); // Redibujar el formulario
+            this.Invalidate(); 
         }
 
         private void FinDelJuego()
         {
-            // Detener los timers de la moto y los bots
             _timerMoto.Stop();
             if (_timerBots != null)
             {
                 _timerBots.Stop();
             }
 
-            // Mostrar mensaje de fin del juego
             MessageBox.Show("Has perdido", "Juego Terminado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            // Opcional: Cerrar la aplicación o reiniciar el juego
             Application.Exit();
         
         }
